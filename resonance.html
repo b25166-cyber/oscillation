@@ -1,0 +1,850 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resonance | Oscillations Lab</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg: #f4f6fb;
+  --card: #ffffff;
+  --ink: #202944;
+  --muted: #6f7892;
+  --blue: #5269e8;
+  --purple: #8858d8;
+  --pink: #e56b9b;
+  --line: #e5e9f3;
+  --soft: #edf0ff;
+  --green: #23866b;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.65;
+}
+h1,h2,h3 { font-family: 'Space Grotesk', sans-serif; line-height: 1.2; }
+h1 { font-size: clamp(2.5rem, 6vw, 4.4rem); letter-spacing: -2px; margin: 15px 0; }
+h2 { font-size: clamp(1.5rem, 3vw, 2rem); letter-spacing: -.7px; }
+p { color: var(--muted); }
+a { color: inherit; text-decoration: none; }
+button,input { font: inherit; }
+
+nav {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 18px 7%; background: rgba(255,255,255,.85);
+  border-bottom: 1px solid var(--line); gap: 15px;
+}
+.logo { font: 700 1.15rem 'Space Grotesk'; }
+.logo span { color: var(--blue); }
+.navlink { color: var(--muted); font-size: .9rem; }
+.wrap { max-width: 1120px; width: 90%; margin: auto; }
+.hero { padding: 65px 0 38px; }
+.eyebrow {
+  display: inline-block; padding: 7px 13px; border-radius: 30px;
+  background: #e9eaff; color: var(--blue); font-weight: 700;
+  font-size: .78rem; letter-spacing: 1px; text-transform: uppercase;
+}
+.hero h1 span {
+  background: linear-gradient(100deg, var(--blue), var(--purple), var(--pink));
+  -webkit-background-clip: text; color: transparent;
+}
+.hero p { max-width: 700px; font-size: 1.08rem; }
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
+.btn {
+  border: 0; border-radius: 12px; padding: 12px 18px;
+  cursor: pointer; font-weight: 700; display: inline-block;
+}
+.primary { background: var(--blue); color: white; }
+.secondary { background: white; color: var(--ink); border: 1px solid var(--line); }
+main { padding-bottom: 65px; }
+.section { margin: 25px 0 35px; scroll-margin-top: 25px; }
+.section-head { margin-bottom: 17px; }
+.section-head p { margin-top: -7px; }
+.card {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: 22px; padding: 24px;
+  box-shadow: 0 8px 28px rgba(45,57,100,.045);
+  min-width: 0;
+}
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 15px; }
+.tag {
+  display: inline-block; border-radius: 9px; padding: 4px 9px;
+  font-size: .75rem; background: var(--soft); color: var(--blue); font-weight: 700;
+}
+.formula {
+  background: #f0f1ff; border: 1px solid #e0e2ff;
+  padding: 18px; border-radius: 15px; text-align: center;
+  font: 600 1.2rem 'Space Grotesk'; margin: 14px 0;
+  overflow-wrap: anywhere;
+}
+.small { font-size: .88rem; }
+.muted { color: var(--muted); }
+.controls { display: grid; gap: 16px; }
+.control-row { display: flex; justify-content: space-between; gap: 10px; font-size: .9rem; }
+input[type=range] { width: 100%; accent-color: var(--blue); cursor: pointer; }
+.metrics { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 15px; }
+.metric { background: #f6f7fc; border-radius: 13px; padding: 13px; }
+.metric strong { display: block; font: 700 1.2rem 'Space Grotesk'; }
+.metric span { font-size: .76rem; color: var(--muted); }
+canvas { width: 100%; display: block; border-radius: 14px; }
+#motionCanvas { background: #f5f6ff; height: 190px; }
+#graphCanvas { background: #fbfbff; height: 240px; }
+.legend { display: flex; flex-wrap: wrap; gap: 15px; font-size: .8rem; color: var(--muted); margin-top: 10px; }
+.dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; }
+.info { border-left: 4px solid var(--blue); background: #f0f2ff; padding: 14px 16px; border-radius: 0 12px 12px 0; }
+.example { border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+.example h3 { margin-top: 0; }
+.step { display: flex; gap: 12px; margin: 13px 0; }
+.stepnum {
+  width: 30px; height: 30px; flex-shrink: 0; border-radius: 9px;
+  display: grid; place-items: center; background: var(--soft); color: var(--blue); font-weight: 700;
+}
+table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+th,td { padding: 12px 10px; text-align: left; border-bottom: 1px solid var(--line); }
+th { color: var(--muted); background: #f8f9fd; }
+.quiz-q { font-weight: 700; color: var(--ink); margin-bottom: 12px; }
+.option {
+  display: block; width: 100%; text-align: left; padding: 12px 14px;
+  margin: 8px 0; border: 1px solid var(--line); background: white;
+  border-radius: 12px; cursor: pointer; color: var(--ink);
+}
+.option:hover { border-color: var(--blue); background: #f6f7ff; }
+.option.correct { background: #e6f7ef; border-color: #66bd95; }
+.option.wrong { background: #fff0f0; border-color: #e99a9a; }
+#quizFeedback { min-height: 28px; font-size: .9rem; }
+footer { text-align: center; border-top: 1px solid var(--line); padding: 28px; color: var(--muted); font-size: .85rem; }
+
+@media(max-width:760px) {
+  .grid2,.grid3 { grid-template-columns: 1fr; }
+  .hero { padding-top: 42px; }
+  .card { padding: 18px; }
+  nav { padding: 15px 5%; }
+  .metrics { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+
+<body>
+<nav>
+  <a class="logo" href="index.html">Oscillation<span>Lab.</span></a>
+  <a class="navlink" href="index.html">← Back to topics</a>
+</nav>
+
+<header class="hero wrap">
+  <span class="eyebrow">Class 11 Physics · Oscillations</span>
+  <h1>Discover the power of <span>Resonance.</span></h1>
+  <p>
+    Why can a tiny push make a swing go higher and higher?
+    Explore how an oscillator responds to an external force, and discover
+    why matching frequencies can make a surprisingly big difference.
+  </p>
+  <div class="hero-actions">
+    <a href="#lab" class="btn primary">Explore the simulation ↓</a>
+    <a href="#learn" class="btn secondary">Learn the physics</a>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section class="section" id="learn">
+  <div class="section-head">
+    <span class="tag">01 · The big idea</span>
+    <h2>What is resonance?</h2>
+  </div>
+  <div class="card">
+    <p>
+      Every oscillator has a <b>natural frequency</b> — the frequency at which
+      it tends to oscillate when disturbed and then allowed to move freely.
+    </p>
+    <p>
+      A <b>driving force</b> is an external force that repeatedly pushes or
+      pulls a system. The frequency of this force is called the
+      <b>driving frequency</b>.
+    </p>
+    <div class="formula">
+      Resonance: driving frequency ≈ natural frequency
+    </div>
+    <p>
+      When the driving frequency matches or is very close to the natural
+      frequency, the oscillator can respond with a large amplitude.
+      This phenomenon is called <b>resonance</b>.
+    </p>
+    <div class="info">
+      <b>Remember:</b> resonance is not simply “moving fast.” It is a
+      particularly large response caused by the relationship between the
+      driving frequency and the system's natural frequency.
+    </div>
+  </div>
+</section>
+
+<section class="section" id="lab">
+  <div class="section-head">
+    <span class="tag">02 · Interactive lab</span>
+    <h2>Find the resonant frequency</h2>
+    <p>Change the driving frequency and damping. Watch how the oscillator responds.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>Control the experiment</h3>
+      <p class="small">Adjust the sliders to explore different conditions.</p>
+
+      <div class="controls">
+        <div>
+          <div class="control-row">
+            <label for="drive">Driving frequency</label>
+            <b><span id="driveVal">1.00</span> Hz</b>
+          </div>
+          <input id="drive" type="range" min="0.2" max="2" step="0.05" value="1">
+        </div>
+
+        <div>
+          <div class="control-row">
+            <label for="natural">Natural frequency</label>
+            <b><span id="naturalVal">1.00</span> Hz</b>
+          </div>
+          <input id="natural" type="range" min="0.5" max="1.8" step="0.05" value="1">
+        </div>
+
+        <div>
+          <div class="control-row">
+            <label for="damping">Damping</label>
+            <b><span id="dampingVal">0.15</span></b>
+          </div>
+          <input id="damping" type="range" min="0.05" max="0.8" step="0.05" value="0.15">
+        </div>
+      </div>
+
+      <div class="formula" id="condition">Resonance!</div>
+      <p id="explanation" class="small">
+        The driving and natural frequencies match. The response is large.
+      </p>
+      <button class="btn secondary" id="resetBtn" type="button">Reset experiment ↺</button>
+    </div>
+
+    <div class="card">
+      <h3>Watch the oscillator</h3>
+      <p class="small">The moving block represents a driven oscillator.</p>
+      <canvas id="motionCanvas" width="600" height="220"></canvas>
+      <div class="metrics">
+        <div class="metric">
+          <strong id="ratio">1.00</strong>
+          <span>Frequency ratio</span>
+        </div>
+        <div class="metric">
+          <strong id="amplitude">High</strong>
+          <span>Relative response</span>
+        </div>
+        <div class="metric">
+          <strong id="status">Resonance</strong>
+          <span>Current condition</span>
+        </div>
+      </div>
+      <p class="small muted">
+        Illustrative model: the motion and response are scaled for learning,
+        not a calibrated laboratory measurement.
+      </p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:20px">
+    <h3>Resonance curve</h3>
+    <p class="small">
+      The curve shows how the relative amplitude changes with driving frequency.
+      The dashed line marks the natural frequency.
+    </p>
+    <canvas id="graphCanvas" width="900" height="330"></canvas>
+    <div class="legend">
+      <span><i class="dot" style="background:#5269e8"></i>Response amplitude</span>
+      <span><i class="dot" style="background:#e56b9b"></i>Natural frequency</span>
+      <span><i class="dot" style="background:#23866b"></i>Selected driving frequency</span>
+    </div>
+    <div class="info small" style="margin-top:15px">
+      <b>Try this:</b> Keep damping low and move the driving frequency close
+      to the natural frequency. Then increase damping and compare the peak.
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <span class="tag">03 · Understand the physics</span>
+    <h2>Free, damped and forced oscillations</h2>
+  </div>
+  <div class="grid3">
+    <div class="card">
+      <span class="tag">Free</span>
+      <h3>Free oscillations</h3>
+      <p>
+        After an initial disturbance, a system oscillates under its own
+        restoring force at its natural frequency. In the ideal case,
+        its amplitude stays constant.
+      </p>
+    </div>
+    <div class="card">
+      <span class="tag">Damped</span>
+      <h3>Damped oscillations</h3>
+      <p>
+        Resistive forces, such as friction or air resistance, dissipate
+        mechanical energy. The amplitude decreases with time.
+      </p>
+    </div>
+    <div class="card">
+      <span class="tag">Driven</span>
+      <h3>Forced oscillations</h3>
+      <p>
+        An external periodic force keeps supplying energy to the system.
+        After the initial transient dies away, the steady motion follows
+        the driving frequency.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <span class="tag">04 · Important formulas</span>
+    <h2>The equations behind resonance</h2>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3>Natural frequency of a spring–mass system</h3>
+      <div class="formula">ω₀ = √(k/m)</div>
+      <p class="small">
+        Here, k is the spring constant and m is the mass.
+        The natural frequency in hertz is
+      </p>
+      <div class="formula">f₀ = ω₀ / 2π</div>
+    </div>
+    <div class="card">
+      <h3>Driven, damped oscillator</h3>
+      <div class="formula">mẍ + bẋ + kx = F₀ cos(ωd t)</div>
+      <p class="small">
+        m = mass, b = damping coefficient, k = spring constant,
+        F₀ = driving-force amplitude and ωd = driving angular frequency.
+      </p>
+      <p class="small">
+        The external force continuously supplies energy while damping
+        removes it.
+      </p>
+    </div>
+    <div class="card">
+      <h3>Steady-state amplitude</h3>
+      <div class="formula">
+        A = F₀ / √[(k − mωd²)² + (bωd)²]
+      </div>
+      <p class="small">
+        This formula shows that the amplitude depends on driving frequency
+        and damping. Near resonance, the response can become large.
+      </p>
+    </div>
+    <div class="card">
+      <h3>What damping changes</h3>
+      <ul>
+        <li>Greater damping reduces the resonance peak.</li>
+        <li>Lower damping produces a taller, sharper peak.</li>
+        <li>Real systems have finite amplitudes because of damping and other limits.</li>
+      </ul>
+    </div>
+  </div>
+  <p class="small muted">
+    Note: ω₀ is the undamped natural angular frequency. With damping,
+    the exact frequency of maximum displacement response can differ slightly
+    from ω₀; in the lightly damped case, resonance is close to ωd = ω₀.
+  </p>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <span class="tag">05 · Everyday physics</span>
+    <h2>Where do we see resonance?</h2>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3>🛝 A swing</h3>
+      <p>
+        Push a swing in rhythm with its natural motion. Each well-timed push
+        adds energy, helping the swing reach a greater height.
+      </p>
+    </div>
+    <div class="card">
+      <h3>🏗️ Bridges and buildings</h3>
+      <p>
+        Wind, machinery or earthquake motion can drive a structure.
+        If the driving frequency is close to one of its natural frequencies,
+        vibrations may become large.
+      </p>
+    </div>
+    <div class="card">
+      <h3>🎸 Musical instruments</h3>
+      <p>
+        Vibrations can excite resonant parts of an instrument, helping
+        particular frequencies produce a stronger sound.
+      </p>
+    </div>
+    <div class="card">
+      <h3>🎵 Sound and air columns</h3>
+      <p>
+        An air column can respond strongly at its resonant frequencies.
+        This helps explain how many wind instruments produce sound.
+      </p>
+    </div>
+  </div>
+  <div class="info">
+    <b>Safety connection:</b> resonance can be useful, but engineers must
+    account for it in structures and machines to avoid excessive vibration.
+    Soldiers may break step when crossing a bridge to avoid repeatedly
+    applying a synchronized periodic force.
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <span class="tag">06 · Worked example</span>
+    <h2>Let's solve one</h2>
+  </div>
+  <div class="card">
+    <h3>Question</h3>
+    <p>
+      A spring–mass oscillator has a natural frequency of 2 Hz.
+      An external periodic force also acts at 2 Hz. What condition is present,
+      and what happens to the amplitude?
+    </p>
+    <div class="step">
+      <div class="stepnum">1</div>
+      <div>
+        <b>Identify the frequencies</b>
+        <p class="small">Natural frequency = 2 Hz; driving frequency = 2 Hz.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="stepnum">2</div>
+      <div>
+        <b>Compare them</b>
+        <p class="small">The driving frequency matches the natural frequency.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="stepnum">3</div>
+      <div>
+        <b>Conclusion</b>
+        <p class="small">
+          The oscillator is at resonance (in the usual lightly damped
+          approximation). Its amplitude can become large, but damping keeps
+          the real response finite.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="quiz">
+  <div class="section-head">
+    <span class="tag">07 · Test yourself</span>
+    <h2>Resonance mini-quiz</h2>
+    <p>Check whether you've understood the key ideas.</p>
+  </div>
+  <div class="card">
+    <div class="control-row">
+      <span class="tag" id="quizProgress">Question 1 of 6</span>
+      <b id="quizScore">Score: 0</b>
+    </div>
+    <div id="quizQuestion" class="quiz-q" style="margin-top:20px"></div>
+    <div id="quizOptions"></div>
+    <p id="quizFeedback" aria-live="polite"></p>
+    <button class="btn primary" id="nextBtn" type="button" disabled>Next question →</button>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  OscillationLab · Learn physics by exploring it ✦
+</footer>
+
+<script>
+const drive = document.getElementById('drive');
+const natural = document.getElementById('natural');
+const damping = document.getElementById('damping');
+
+const driveVal = document.getElementById('driveVal');
+const naturalVal = document.getElementById('naturalVal');
+const dampingVal = document.getElementById('dampingVal');
+
+const motionCanvas = document.getElementById('motionCanvas');
+const motion = motionCanvas.getContext('2d');
+const graphCanvas = document.getElementById('graphCanvas');
+const graph = graphCanvas.getContext('2d');
+
+let phase = 0;
+let lastTime = 0;
+let currentAmplitude = 0;
+let targetAmplitude = 0;
+
+function response(f, f0, zeta) {
+  // Normalized forced-oscillator response.
+  const r = f / f0;
+  return 1 / Math.sqrt((1 - r * r) ** 2 + (2 * zeta * r) ** 2);
+}
+
+function update() {
+  const f = Number(drive.value);
+  const f0 = Number(natural.value);
+  const z = Number(damping.value);
+  const ratio = f / f0;
+  const amp = response(f, f0, z);
+
+  driveVal.textContent = f.toFixed(2);
+  naturalVal.textContent = f0.toFixed(2);
+  dampingVal.textContent = z.toFixed(2);
+  document.getElementById('ratio').textContent = ratio.toFixed(2);
+
+  targetAmplitude = amp;
+
+  const condition = document.getElementById('condition');
+  const explanation = document.getElementById('explanation');
+  const status = document.getElementById('status');
+  const ampText = document.getElementById('amplitude');
+
+  if (Math.abs(f - f0) < 0.075) {
+    condition.textContent = 'Near resonance!';
+    explanation.textContent =
+      'The frequencies are close. Energy transfer can produce a large response.';
+    status.textContent = 'Near resonance';
+  } else if (f < f0) {
+    condition.textContent = 'Below natural frequency';
+    explanation.textContent =
+      'The driving force is slower than the natural frequency.';
+    status.textContent = 'Below resonance';
+  } else {
+    condition.textContent = 'Above natural frequency';
+    explanation.textContent =
+      'The driving force is faster than the natural frequency.';
+    status.textContent = 'Above resonance';
+  }
+
+  if (amp > 4) ampText.textContent = 'Very high';
+  else if (amp > 2) ampText.textContent = 'High';
+  else if (amp > 1) ampText.textContent = 'Moderate';
+  else ampText.textContent = 'Low';
+
+  drawGraph(f, f0, z);
+}
+
+function drawGraph(f, f0, z) {
+  const w = graphCanvas.width;
+  const h = graphCanvas.height;
+  graph.clearRect(0, 0, w, h);
+
+  const left = 60, right = 22, top = 22, bottom = 48;
+  const pw = w - left - right;
+  const ph = h - top - bottom;
+  const maxF = 2;
+  const maxY = 8;
+
+  graph.strokeStyle = '#e7e9f4';
+  graph.fillStyle = '#707993';
+  graph.lineWidth = 1;
+  graph.font = '14px DM Sans, sans-serif';
+
+  for (let i = 0; i <= 4; i++) {
+    const y = top + ph * i / 4;
+    graph.beginPath();
+    graph.moveTo(left, y);
+    graph.lineTo(w - right, y);
+    graph.stroke();
+    graph.fillText((maxY * (1 - i / 4)).toFixed(0), 20, y + 5);
+  }
+
+  for (let i = 0; i <= 4; i++) {
+    const x = left + pw * i / 4;
+    graph.beginPath();
+    graph.moveTo(x, top);
+    graph.lineTo(x, top + ph);
+    graph.stroke();
+    graph.fillText((maxF * i / 4).toFixed(1), x - 10, h - 20);
+  }
+
+  graph.fillStyle = '#707993';
+  graph.fillText('Relative amplitude', left, 15);
+  graph.fillText('Driving frequency (Hz)', w / 2 - 75, h - 3);
+
+  function xPos(freq) { return left + (freq / maxF) * pw; }
+  function yPos(value) {
+    return top + ph - Math.min(value, maxY) / maxY * ph;
+  }
+
+  // Natural-frequency marker
+  graph.save();
+  graph.setLineDash([6, 5]);
+  graph.strokeStyle = '#e56b9b';
+  graph.lineWidth = 2;
+  graph.beginPath();
+  graph.moveTo(xPos(f0), top);
+  graph.lineTo(xPos(f0), top + ph);
+  graph.stroke();
+  graph.restore();
+
+  // Frequency-response curve
+  graph.strokeStyle = '#5269e8';
+  graph.lineWidth = 3;
+  graph.beginPath();
+  for (let i = 0; i <= 300; i++) {
+    const freq = maxF * i / 300;
+    const val = response(freq, f0, z);
+    const x = xPos(freq);
+    const y = yPos(val);
+    if (i === 0) graph.moveTo(x, y);
+    else graph.lineTo(x, y);
+  }
+  graph.stroke();
+
+  // Selected driving frequency marker
+  const selectedX = xPos(f);
+  const selectedY = yPos(response(f, f0, z));
+  graph.fillStyle = '#23866b';
+  graph.beginPath();
+  graph.arc(selectedX, selectedY, 6, 0, Math.PI * 2);
+  graph.fill();
+}
+
+function drawMotion() {
+  const w = motionCanvas.width;
+  const h = motionCanvas.height;
+  motion.clearRect(0, 0, w, h);
+
+  motion.strokeStyle = '#dfe3f4';
+  motion.lineWidth = 2;
+  motion.beginPath();
+  motion.moveTo(25, 125);
+  motion.lineTo(w - 25, 125);
+  motion.stroke();
+
+  const cx = w / 2;
+  const scaled = Math.min(currentAmplitude / 5, 1);
+  const x = cx + Math.sin(phase) * 190 * scaled;
+
+  // Track
+  motion.strokeStyle = '#d5d9ee';
+  motion.beginPath();
+  motion.moveTo(45, 165);
+  motion.lineTo(w - 45, 165);
+  motion.stroke();
+
+  // Oscillator block
+  motion.fillStyle = '#5269e8';
+  motion.beginPath();
+  motion.roundRect(x - 27, 96, 54, 54, 12);
+  motion.fill();
+
+  motion.fillStyle = '#ffffff';
+  motion.font = 'bold 18px DM Sans, sans-serif';
+  motion.textAlign = 'center';
+  motion.fillText('m', x, 129);
+
+  // Spring-like line connecting block to support
+  motion.strokeStyle = '#8858d8';
+  motion.lineWidth = 3;
+  motion.beginPath();
+  motion.moveTo(25, 123);
+  const steps = 14;
+  for (let i = 1; i <= steps; i++) {
+    const sx = 25 + (x - 27 - 25) * i / steps;
+    const sy = 123 + (i === steps ? 0 : (i % 2 ? -1 : 1) * 9);
+    motion.lineTo(sx, sy);
+  }
+  motion.stroke();
+
+  motion.fillStyle = '#68728f';
+  motion.font = '13px DM Sans, sans-serif';
+  motion.fillText('Equilibrium', cx, 195);
+  motion.fillText('← motion →', cx, 25);
+  motion.textAlign = 'start';
+}
+
+function animate(time) {
+  if (!lastTime) lastTime = time;
+  const dt = Math.min((time - lastTime) / 1000, 0.05);
+  lastTime = time;
+
+  phase += dt * Number(drive.value) * Math.PI * 2;
+  currentAmplitude += (targetAmplitude - currentAmplitude) * Math.min(1, dt * 2);
+  drawMotion();
+  requestAnimationFrame(animate);
+}
+
+[drive, natural, damping].forEach(el => el.addEventListener('input', update));
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  drive.value = 1;
+  natural.value = 1;
+  damping.value = 0.15;
+  phase = 0;
+  update();
+});
+
+update();
+requestAnimationFrame(animate);
+
+// Quiz
+const questions = [
+  {
+    q: '1. What is resonance?',
+    options: [
+      'When amplitude always becomes zero',
+      'When driving frequency is close to natural frequency and response becomes large',
+      'When an object stops oscillating',
+      'When there is no external force'
+    ],
+    answer: 1,
+    why: 'Matching the driving frequency to the natural frequency can produce a large response.'
+  },
+  {
+    q: '2. What is the natural frequency?',
+    options: [
+      'The frequency of the external force in every situation',
+      'The frequency at which a system tends to oscillate freely',
+      'Always zero',
+      'The frequency of friction'
+    ],
+    answer: 1,
+    why: 'It is a characteristic frequency of the oscillating system.'
+  },
+  {
+    q: '3. What is the driving force?',
+    options: [
+      'A force that always stops motion',
+      'The restoring force only',
+      'An external force that repeatedly acts on the system',
+      'The weight of the object'
+    ],
+    answer: 2,
+    why: 'A periodic external force can maintain forced oscillations.'
+  },
+  {
+    q: '4. What generally happens when damping increases?',
+    options: [
+      'The resonance peak becomes smaller',
+      'The resonance peak becomes infinitely high',
+      'The natural frequency becomes infinite',
+      'The driving force disappears'
+    ],
+    answer: 0,
+    why: 'Greater damping reduces the amplitude response near resonance.'
+  },
+  {
+    q: '5. How can a swing be made to rise higher efficiently?',
+    options: [
+      'Push randomly at any time',
+      'Push in rhythm with its natural motion',
+      'Never push it',
+      'Increase friction'
+    ],
+    answer: 1,
+    why: 'Well-timed pushes transfer energy efficiently to the swing.'
+  },
+  {
+    q: '6. Why is resonance important in structural engineering?',
+    options: [
+      'It prevents all vibrations',
+      'It removes gravity',
+      'It can cause excessive vibration if not accounted for',
+      'It guarantees that structures never break'
+    ],
+    answer: 2,
+    why: 'A structure driven near one of its natural frequencies may vibrate strongly.'
+  }
+];
+
+let qIndex = 0;
+let score = 0;
+let answered = false;
+
+function showQuestion() {
+  answered = false;
+  const q = questions[qIndex];
+  document.getElementById('quizProgress').textContent =
+    `Question ${qIndex + 1} of ${questions.length}`;
+  document.getElementById('quizScore').textContent = `Score: ${score}`;
+  document.getElementById('quizQuestion').textContent = q.q;
+  document.getElementById('quizFeedback').textContent = '';
+  document.getElementById('nextBtn').disabled = true;
+  document.getElementById('nextBtn').textContent =
+    qIndex === questions.length - 1 ? 'See final score →' : 'Next question →';
+
+  const box = document.getElementById('quizOptions');
+  box.innerHTML = '';
+
+  q.options.forEach((option, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    btn.type = 'button';
+    btn.textContent = option;
+    btn.addEventListener('click', () => chooseAnswer(i, btn));
+    box.appendChild(btn);
+  });
+}
+
+function chooseAnswer(i, chosen) {
+  if (answered) return;
+  answered = true;
+  const q = questions[qIndex];
+  const buttons = document.querySelectorAll('#quizOptions .option');
+
+  buttons.forEach((btn, index) => {
+    btn.disabled = true;
+    if (index === q.answer) btn.classList.add('correct');
+  });
+
+  if (i === q.answer) {
+    score++;
+    document.getElementById('quizFeedback').textContent = 'Correct! ' + q.why;
+  } else {
+    chosen.classList.add('wrong');
+    document.getElementById('quizFeedback').textContent = 'Not quite. ' + q.why;
+  }
+
+  document.getElementById('quizScore').textContent = `Score: ${score}`;
+  document.getElementById('nextBtn').disabled = false;
+}
+
+document.getElementById('nextBtn').addEventListener('click', () => {
+  if (!answered) return;
+
+  if (qIndex < questions.length - 1) {
+    qIndex++;
+    showQuestion();
+  } else {
+    document.getElementById('quizQuestion').textContent =
+      `You scored ${score} out of ${questions.length}!`;
+    document.getElementById('quizOptions').innerHTML =
+      '<p>Review the formulas and try the simulation again to strengthen your understanding.</p>';
+    document.getElementById('quizFeedback').textContent =
+      score >= 5 ? 'Excellent work! 🌟' : 'Good effort! Revising the key ideas will help.';
+    document.getElementById('quizProgress').textContent = 'Quiz complete';
+    document.getElementById('nextBtn').textContent = 'Try again ↺';
+    document.getElementById('nextBtn').disabled = false;
+    document.getElementById('nextBtn').onclick = null;
+    document.getElementById('nextBtn').addEventListener('click', restartQuiz, { once: true });
+  }
+});
+
+function restartQuiz() {
+  qIndex = 0;
+  score = 0;
+  showQuestion();
+}
+
+showQuestion();
+</script>
+</body>
+</html>

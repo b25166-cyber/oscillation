@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simple Harmonic Motion | Physics Lab</title>
+
+<style>
+:root {
+  --blue: #1677ee;
+  --ink: #172c5b;
+  --muted: #7185a9;
+  --line: #e2ebfa;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--ink);
+  background: linear-gradient(145deg, #f5faff, #eaf3ff);
+  line-height: 1.6;
+}
+
+nav {
+  width: min(1160px, calc(100% - 40px));
+  margin: 20px auto 0;
+  padding: 17px 27px;
+  background: #ffffffdf;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.brand {
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: var(--blue);
+}
+
+.navlinks {
+  display: flex;
+  gap: 22px;
+  flex-wrap: wrap;
+}
+
+nav a {
+  color: #61789f;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+header, main {
+  width: min(1160px, calc(100% - 40px));
+  margin: 35px auto;
+}
+
+.eyebrow {
+  color: #397ce0;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  margin-bottom: 12px;
+}
+
+h1 {
+  font-size: clamp(38px, 6vw, 66px);
+  line-height: 1.1;
+  margin-bottom: 15px;
+  background: linear-gradient(90deg, #183c91, #147ff3);
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+header p {
+  color: #7a8fb2;
+  max-width: 730px;
+}
+
+.section-head {
+  margin: 30px 0 15px;
+}
+
+.section-head h2 {
+  font-size: 25px;
+  color: #172f69;
+}
+
+.section-head p {
+  color: #8296b8;
+  font-size: 14px;
+}
+
+.panel {
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 12px 35px #365c9610;
+}
+
+.sim-layout {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 22px;
+}
+
+#scene {
+  width: 100%;
+  height: 350px;
+  display: block;
+  background: #f2f7ff;
+  border-radius: 14px;
+}
+
+.controls-wrap {
+  border-left: 1px solid var(--line);
+  padding-left: 22px;
+}
+
+h3 {
+  font-size: 17px;
+  color: #1a397a;
+  margin-bottom: 7px;
+}
+
+.subtext, .note {
+  font-size: 12px;
+  color: #8296b8;
+  margin-bottom: 15px;
+}
+
+.control {
+  margin-bottom: 16px;
+}
+
+.control label {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 7px;
+}
+
+.val {
+  color: #1769d7;
+  background: #edf5ff;
+  padding: 2px 8px;
+  border-radius: 7px;
+  white-space: nowrap;
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: #3180f6;
+  cursor: pointer;
+}
+
+.range-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #8195b6;
+}
+
+.actions {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+
+button {
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 16px;
+  background: linear-gradient(100deg, #3978ff, #1769e8);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button.secondary {
+  background: #edf4ff;
+  color: #3768b6;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background: #f0f6ff;
+  border-radius: 13px;
+  padding: 12px 5px;
+  text-align: center;
+}
+
+.stat {
+  border-right: 1px solid #d1e0f7;
+  min-width: 0;
+}
+
+.stat:last-child { border: 0; }
+
+.stat span {
+  display: block;
+  font-size: 10px;
+  color: #6687b8;
+}
+
+.stat strong {
+  font-size: 16px;
+  color: #1d63d5;
+}
+
+.formula, .small-formula {
+  background: #eaf3ff;
+  color: #1e5bb6;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.graph-grid, .concept-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 15px;
+}
+
+.graph-card, .concept {
+  background: white;
+  padding: 17px;
+  border-radius: 16px;
+  box-shadow: 0 9px 25px #365c9608;
+  min-width: 0;
+}
+
+.graph-title {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.graph-card canvas {
+  width: 100%;
+  height: 170px;
+  display: block;
+}
+
+.graph-card p, .concept p {
+  font-size: 13px;
+  color: #7185a9;
+  margin-top: 7px;
+}
+
+.concept {
+  background: #f4f8ff;
+  border: 1px solid #edf3ff;
+}
+
+.concept h3 { font-size: 16px; }
+
+.small-formula { font-size: 17px; }
+
+.example {
+  border: 1px solid #e3ecfa;
+  border-radius: 13px;
+  padding: 16px;
+  margin-top: 12px;
+}
+
+.example p {
+  font-size: 14px;
+  color: #60779c;
+}
+
+details { margin-top: 10px; }
+
+summary {
+  color: #216bd5;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.answer {
+  background: #f1f6ff;
+  padding: 12px;
+  border-radius: 9px;
+  margin-top: 10px;
+}
+
+#options {
+  display: grid;
+  gap: 8px;
+}
+
+#options button {
+  text-align: left;
+  background: #eff5ff;
+  color: #25477f;
+}
+
+#feedback {
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+footer {
+  text-align: center;
+  padding: 25px;
+  color: #8194b2;
+  font-size: 12px;
+}
+
+@media (max-width: 850px) {
+  .sim-layout { grid-template-columns: 1fr; }
+  .controls-wrap {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+    padding: 20px 0 0;
+  }
+  .graph-grid { grid-template-columns: 1fr; }
+  .concept-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 540px) {
+  nav, header, main {
+    width: calc(100% - 24px);
+  }
+  nav { padding: 15px; }
+  .navlinks { gap: 12px; }
+  .concept-grid { grid-template-columns: 1fr; }
+  #scene { height: 260px; }
+  .stats { grid-template-columns: 1fr; }
+  .stat {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+    padding: 6px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="brand">⚛ PHYSICS LAB</div>
+  <div class="navlinks">
+    <a href="index.html">Home</a>
+    <a href="#experiment">Experiment</a>
+    <a href="#graphs">Graphs</a>
+    <a href="#energy">Energy</a>
+    <a href="#learn">Learn</a>
+    <a href="periodic-motion.html">Periodic Motion</a>
+  </div>
+</nav>
+
+<header>
+  <div class="eyebrow">CLASS 11 PHYSICS · OSCILLATIONS</div>
+  <h1>Simple Harmonic Motion</h1>
+  <p>
+    Don't just read about motion. Experiment with it!
+    Change the mass, spring stiffness and amplitude,
+    then watch the motion, graphs, and energy transformation change in real time.
+  </p>
+</header>
+
+<main>
+
+  <div class="section-head" id="experiment">
+    <h2>〰️ Your Virtual Spring–Mass System</h2>
+    <p>Change the controls and observe simple harmonic motion.</p>
+  </div>
+
+  <section class="panel sim-layout">
+
+    <div>
+      <canvas id="scene"></canvas>
+      <p class="note">
+        The dotted line shows the equilibrium position.
+        The block oscillates around this position.
+      </p>
+    </div>
+
+    <div class="controls-wrap">
+      <h3>Experiment controls</h3>
+      <p class="subtext">Your calculations update automatically.</p>
+
+      <div class="control">
+        <label>Mass (m) <span class="val" id="massVal"></span></label>
+        <input id="mass" type="range" min="0.2" max="2" step="0.1" value="1">
+        <div class="range-labels"><span>0.2 kg</span><span>2 kg</span></div>
+      </div>
+
+      <div class="control">
+        <label>Spring stiffness (k) <span class="val" id="stiffVal"></span></label>
+        <input id="stiff" type="range" min="5" max="50" value="20">
+        <div class="range-labels"><span>5 N/m</span><span>50 N/m</span></div>
+      </div>
+
+      <div class="control">
+        <label>Amplitude (A) <span class="val" id="ampVal"></span></label>
+        <input id="amp" type="range" min="0.05" max="0.30" step="0.01" value="0.20">
+        <div class="range-labels"><span>0.05 m</span><span>0.30 m</span></div>
+      </div>
+
+      <div class="control">
+        <label>Simulation speed <span class="val" id="speedVal"></span></label>
+        <input id="speed" type="range" min="0.5" max="2" step="0.1" value="1">
+        <div class="range-labels"><span>0.5×</span><span>2×</span></div>
+      </div>
+
+      <div class="actions">
+        <button id="play">Ⅱ Pause</button>
+        <button id="reset" class="secondary">↻ Reset</button>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <span>Time period (T)</span>
+          <strong id="period"></strong>
+        </div>
+        <div class="stat">
+          <span>Frequency (f)</span>
+          <strong id="frequency"></strong>
+        </div>
+        <div class="stat">
+          <span>Angular frequency (ω)</span>
+          <strong id="omega"></strong>
+        </div>
+      </div>
+
+      <div class="formula">T = 2π√(m/k)</div>
+      <p class="note">Ideal spring with no friction.</p>
+    </div>
+  </section>
+
+  <div class="section-head" id="graphs">
+    <h2>📊 SHM Kinematic Graphs</h2>
+    <p>See how displacement, velocity and acceleration vary with time.</p>
+  </div>
+
+  <section class="graph-grid">
+    <div class="graph-card">
+      <div class="graph-title">🔵 Displacement vs Time</div>
+      <canvas id="xGraph"></canvas>
+      <p>Displacement is greatest at the extreme positions.</p>
+    </div>
+
+    <div class="graph-card">
+      <div class="graph-title">🟢 Velocity vs Time</div>
+      <canvas id="vGraph"></canvas>
+      <p>Speed is greatest at equilibrium and zero at the extremes.</p>
+    </div>
+
+    <div class="graph-card">
+      <div class="graph-title">🩷 Acceleration vs Time</div>
+      <canvas id="aGraph"></canvas>
+      <p>Acceleration always points towards equilibrium.</p>
+    </div>
+  </section>
+
+  <div class="section-head" id="energy">
+    <h2>⚡ Energy in Simple Harmonic Motion</h2>
+    <p>Understand how potential and kinetic energy continuously interchange while total energy remains conserved.</p>
+  </div>
+
+  <section class="concept-grid">
+    <article class="concept">
+      <h3>Kinetic Energy (K)</h3>
+      <p>Energy associated with the motion of the block. Maximum at equilibrium, zero at extremes.</p>
+      <div class="small-formula">K = ½mv² = ½kA² sin²(ωt)</div>
+    </article>
+
+    <article class="concept">
+      <h3>Potential Energy (U)</h3>
+      <p>Stored elastic energy in the deformed spring. Maximum at extremes, zero at equilibrium.</p>
+      <div class="small-formula">U = ½kx² = ½kA² cos²(ωt)</div>
+    </article>
+
+    <article class="concept">
+      <h3>Total Mechanical Energy (E)</h3>
+      <p>In an ideal system without friction, total energy is constant at all times.</p>
+      <div class="small-formula">E = K + U = ½kA²</div>
+    </article>
+  </section>
+
+  <div class="section-head" id="learn">
+    <h2>🧠 Explore the Concepts</h2>
+    <p>Important Class 11 ideas behind the experiment.</p>
+  </div>
+
+  <section class="concept-grid">
+    <article class="concept">
+      <h3>What is SHM?</h3>
+      <p>
+        Simple harmonic motion is oscillatory motion in which
+        acceleration is proportional to displacement and directed
+        opposite to it.
+      </p>
+      <div class="small-formula">a = −ω²x</div>
+    </article>
+
+    <article class="concept">
+      <h3>Amplitude</h3>
+      <p>The maximum displacement from the equilibrium position. Its SI unit is metre.</p>
+      <div class="small-formula">Maximum |x| = A</div>
+    </article>
+
+    <article class="concept">
+      <h3>Time Period</h3>
+      <p>The time required to complete one full oscillation.</p>
+      <div class="small-formula">T = 2π/ω</div>
+    </article>
+
+    <article class="concept">
+      <h3>Frequency</h3>
+      <p>The number of complete oscillations per second. Its unit is hertz.</p>
+      <div class="small-formula">f = 1/T</div>
+    </article>
+
+    <article class="concept">
+      <h3>Restoring Force</h3>
+      <p>For an ideal spring, the restoring force points opposite to displacement.</p>
+      <div class="small-formula">F = −kx</div>
+    </article>
+
+    <article class="concept">
+      <h3>Angular Frequency</h3>
+      <p>It describes how quickly the phase of the oscillation changes.</p>
+      <div class="small-formula">ω = √(k/m)</div>
+    </article>
+  </section>
+
+  <div class="section-head">
+    <h2>✏️ SHM Equations & Formulas</h2>
+    <p>Connect the graphs and physics equations together.</p>
+  </div>
+
+  <section class="panel concept-grid">
+    <div>
+      <div class="small-formula">x = A cos(ωt)</div>
+      <p class="note">Displacement from the positive extreme.</p>
+    </div>
+    <div>
+      <div class="small-formula">v = −Aω sin(ωt)</div>
+      <p class="note">Velocity is the rate of change of displacement.</p>
+    </div>
+    <div>
+      <div class="small-formula">a = −ω²x</div>
+      <p class="note">Acceleration is opposite to displacement.</p>
+    </div>
+    <div>
+      <div class="small-formula">vmax = Aω</div>
+      <p class="note">Maximum speed occurs at equilibrium.</p>
+    </div>
+    <div>
+      <div class="small-formula">amax = Aω²</div>
+      <p class="note">Maximum acceleration occurs at the extremes.</p>
+    </div>
+    <div>
+      <div class="small-formula">E = ½kA²</div>
+      <p class="note">Total energy depends on stiffness and amplitude squared.</p>
+    </div>
+  </section>
+
+  <div class="section-head">
+    <h2>🧮 Worked Examples</h2>
+    <p>Try the question before opening the solution.</p>
+  </div>
+
+  <section class="panel">
+    <div class="example">
+      <h3>Example 1: Find the time period</h3>
+      <p>A 2 kg block is attached to a spring of stiffness 50 N/m. Find T.</p>
+      <details>
+        <summary>Show solution</summary>
+        <div class="answer">
+          T = 2π√(m/k)<br>
+          T = 2π√(2/50)<br>
+          <strong>Answer: T ≈ 1.26 s</strong>
+        </div>
+      </details>
+    </div>
+
+    <div class="example">
+      <h3>Example 2: Find maximum speed</h3>
+      <p>An oscillator has amplitude 0.1 m and angular frequency 4 rad/s.</p>
+      <details>
+        <summary>Show solution</summary>
+        <div class="answer">
+          vmax = Aω = 0.1 × 4<br>
+          <strong>Answer: 0.4 m/s</strong>
+        </div>
+      </details>
+    </div>
+
+    <div class="example">
+      <h3>Example 3: Find total mechanical energy</h3>
+      <p>A spring with stiffness 40 N/m has an amplitude of 0.2 m. Find the total energy.</p>
+      <details>
+        <summary>Show solution</summary>
+        <div class="answer">
+          E = ½kA² = 0.5 × 40 × (0.2)²<br>
+          E = 20 × 0.04<br>
+          <strong>Answer: 0.8 J</strong>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <div class="section-head">
+    <h2>🎯 Quick Challenge</h2>
+    <p>Test your understanding of simple harmonic motion.</p>
+  </div>
+
+  <section class="panel" style="max-width:760px">
+    <p id="question"></p>
+    <div id="options"></div>
+    <p id="feedback"></p>
+    <div class="actions">
+      <button id="next" style="display:none">Next question →</button>
+    </div>
+  </section>
+
+</main>
+
+<footer>PHYSICS LAB · Learn by experimenting</footer>
+
+<script>
+const scene = document.getElementById("scene");
+const mass = document.getElementById("mass");
+const stiff = document.getElementById("stiff");
+const amp = document.getElementById("amp");
+const speed = document.getElementById("speed");
+
+const graphs = [
+  {el: document.getElementById("xGraph"), type:"x", color:"#286dff"},
+  {el: document.getElementById("vGraph"), type:"v", color:"#08a9a5"},
+  {el: document.getElementById("aGraph"), type:"a", color:"#e63f9c"}
+];
+
+let t = 0, last = 0, running = true;
+
+function values() {
+  const m = +mass.value;
+  const k = +stiff.value;
+  const A = +amp.value;
+  const w = Math.sqrt(k / m);
+
+  return {
+    m, k, A, w,
+    T: 2 * Math.PI / w,
+    f: w / (2 * Math.PI)
+  };
+}
+
+function updateValues() {
+  const p = values();
+
+  document.getElementById("massVal").textContent = p.m.toFixed(1) + " kg";
+  document.getElementById("stiffVal").textContent = p.k + " N/m";
+  document.getElementById("ampVal").textContent = p.A.toFixed(2) + " m";
+  document.getElementById("speedVal").textContent = (+speed.value).toFixed(1) + "×";
+
+  document.getElementById("period").textContent = p.T.toFixed(2) + " s";
+  document.getElementById("frequency").textContent = p.f.toFixed(2) + " Hz";
+  document.getElementById("omega").textContent = p.w.toFixed(2) + " rad/s";
+}
+
+function fitCanvas(canvas, ctx) {
+  const r = canvas.getBoundingClientRect();
+  const d = window.devicePixelRatio || 1;
+
+  canvas.width = Math.max(1, Math.round(r.width * d));
+  canvas.height = Math.max(1, Math.round(r.height * d));
+  ctx.setTransform(d, 0, 0, d, 0, 0);
+
+  return {w:r.width, h:r.height};
+}
+
+function drawScene() {
+  const ctx = scene.getContext("2d");
+  const {w, h} = fitCanvas(scene, ctx);
+  const p = values();
+
+  ctx.clearRect(0, 0, w, h);
+
+  const wall = 25;
+  const cy = h * 0.53;
+  const bw = 48, bh = 42;
+  const eq = Math.min(w * 0.69, w - 100);
+  const travel = Math.min(w * 0.34, 180);
+  const x = eq + travel * (p.A / 0.30) * Math.cos(p.w * t);
+
+  // Wall and floor
+  ctx.fillStyle = "#a7bfdf";
+  ctx.fillRect(wall, cy - 64, 10, 128);
+
+  ctx.strokeStyle = "#8da9d0";
+  ctx.lineWidth = 2;
+
+  for (let y = cy - 58; y < cy + 60; y += 12) {
+    ctx.beginPath();
+    ctx.moveTo(wall - 7, y + 5);
+    ctx.lineTo(wall + 1, y - 5);
+    ctx.stroke();
+  }
+
+  ctx.fillStyle = "#d4e3f6";
+  ctx.fillRect(wall, cy + 28, w - 2 * wall, 9);
+
+  // Equilibrium position
+  ctx.save();
+  ctx.setLineDash([5, 5]);
+  ctx.strokeStyle = "#4f8df5";
+  ctx.beginPath();
+  ctx.moveTo(eq, cy - 85);
+  ctx.lineTo(eq, cy + 80);
+  ctx.stroke();
+  ctx.restore();
+
+  ctx.fillStyle = "#2867c7";
+  ctx.font = "12px Arial";
+  ctx.textAlign = "center";
+  ctx.fillText("Equilibrium", eq, cy + 102);
+
+  // Spring
+  const start = wall + 10;
+  const end = x - bw / 2;
+  const coils = 13;
+  const dx = (end - start) / (coils * 2);
+
+  ctx.beginPath();
+  ctx.moveTo(start, cy);
+
+  for (let i = 1; i < coils * 2; i++) {
+    ctx.lineTo(start + i * dx, cy + (i % 2 ? 12 : -12));
+  }
+
+  ctx.lineTo(end, cy);
+  ctx.strokeStyle = "#5b83b9";
+  ctx.lineWidth = 3;
+  ctx.stroke();
+
+  // Moving block
+  const grad = ctx.createLinearGradient(x - bw/2, cy, x + bw/2, cy);
+  grad.addColorStop(0, "#a2a0ff");
+  grad.addColorStop(1, "#7067f3");
+
+  ctx.fillStyle = grad;
+  ctx.strokeStyle = "#6259db";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.roundRect(x - bw/2, cy - bh/2, bw, bh, 7);
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.fillStyle = "#fff";
+  ctx.font = "bold 16px Arial";
+  ctx.fillText("m", x, cy + 5);
+
+  ctx.fillStyle = "#315d9d";
+  ctx.font = "12px Arial";
+  ctx.textAlign = "left";
+  ctx.fillText("x = " + (p.A * Math.cos(p.w*t)).toFixed(3) + " m", 12, 20);
+}
+
+function drawGraph(item) {
+  const {el, type, color} = item;
+  const ctx = el.getContext("2d");
+  const {w, h} = fitCanvas(el, ctx);
+  const p = values();
+
+  ctx.clearRect(0, 0, w, h);
+
+  const left = 32, right = 8, top = 15, bottom = 25;
+  const gw = w - left - right;
+  const gh = h - top - bottom;
+  const mid = top + gh / 2;
+
+  let max = type === "x" ? p.A :
+            type === "v" ? p.A * p.w :
+            p.A * p.w * p.w;
+
+  max = Math.max(max, 0.000001);
+
+  ctx.strokeStyle = "#e2ebf7";
+
+  for (let i = 0; i <= 4; i++) {
+    const y = top + i * gh / 4;
+    ctx.beginPath();
+    ctx.moveTo(left, y);
+    ctx.lineTo(left + gw, y);
+    ctx.stroke();
+  }
+
+  ctx.strokeStyle = "#b6c9e4";
+  ctx.beginPath();
+  ctx.moveTo(left, top);
+  ctx.lineTo(left, top + gh);
+  ctx.lineTo(left + gw, top + gh);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(left, mid);
+  ctx.lineTo(left + gw, mid);
+  ctx.stroke();
+
+  ctx.fillStyle = "#6f87aa";
+  ctx.font = "10px Arial";
+  ctx.textAlign = "left";
+  ctx.fillText(type === "x" ? "x (m)" :
+               type === "v" ? "v (m/s)" : "a (m/s²)", 4, 11);
+
+  const duration = 2 * p.T;
+
+  function valueAt(time) {
+    const z = p.w * time;
+
+    if (type === "x") return p.A * Math.cos(z);
+    if (type === "v") return -p.A * p.w * Math.sin(z);
+    return -p.A * p.w * p.w * Math.cos(z);
+  }
+
+  function X(time) {
+    return left + time / duration * gw;
+  }
+
+  function Y(time) {
+    return mid - valueAt(time) / max * (gh * 0.41);
+  }
+
+  ctx.beginPath();
+
+  for (let i = 0; i <= 220; i++) {
+    const time = duration * i / 220;
+    const xx = X(time), yy = Y(time);
+
+    if (i === 0) ctx.moveTo(xx, yy);
+    else ctx.lineTo(xx, yy);
+  }
+
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+
+  // Moving point on each graph
+  const current = t % duration;
+  const px = X(current), py = Y(current);
+
+  ctx.save();
+  ctx.setLineDash([4, 4]);
+  ctx.strokeStyle = "#9aabc4";
+  ctx.beginPath();
+  ctx.moveTo(px, top);
+  ctx.lineTo(px, top + gh);
+  ctx.stroke();
+  ctx.restore();
+
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.arc(px, py, 4.5, 0, 2 * Math.PI);
+  ctx.fill();
+
+  ctx.fillStyle = "#6f87aa";
+  ctx.textAlign = "center";
+  ctx.fillText("0", left, h - 7);
+  ctx.fillText("2T", left + gw, h - 7);
+}
+
+function drawAll() {
+  updateValues();
+  drawScene();
+  graphs.forEach(drawGraph);
+}
+
+function animate(now) {
+  if (!last) last = now;
+
+  const dt = Math.min((now - last) / 1000, 0.05);
+  last = now;
+
+  if (running) t += dt * (+speed.value);
+
+  drawAll();
+  requestAnimationFrame(animate);
+}
+
+[mass, stiff, amp, speed].forEach(el => {
+  el.addEventListener("input", drawAll);
+});
+
+document.getElementById("play").addEventListener("click", () => {
+  running = !running;
+  document.getElementById("play").textContent =
+    running ? "Ⅱ Pause" : "▶ Resume";
+});
+
+document.getElementById("reset").addEventListener("click", () => {
+  t = 0;
+  running = true;
+  last = 0;
+  document.getElementById("play").textContent = "Ⅱ Pause";
+  drawAll();
+});
+
+// Quiz
+const questions = [
+  {
+    q:"1. Where is the speed of an SHM oscillator maximum?",
+    o:["At the extreme positions","At equilibrium","It is always zero","It is the same everywhere"],
+    a:1,
+    e:"At equilibrium, displacement is zero and speed is maximum."
+  },
+  {
+    q:"2. If mass increases while spring stiffness stays constant, what happens to the period?",
+    o:["It decreases","It becomes zero","It increases","It stays the same"],
+    a:2,
+    e:"T = 2π√(m/k), so increasing mass increases the period."
+  },
+  {
+    q:"3. What is the velocity at an extreme position?",
+    o:["Maximum","Zero","Equal to acceleration","Always positive"],
+    a:1,
+    e:"The block momentarily stops before reversing direction."
+  },
+  {
+    q:"4. Which equation describes acceleration in SHM?",
+    o:["a = ωx","a = ω²x","a = −ω²x","a = −ωx²"],
+    a:2,
+    e:"Acceleration is proportional to displacement and opposite in direction."
+  },
+  {
+    q:"5. What is the total mechanical energy of an undamped spring-mass system proportional to?",
+    o:["Amplitude","Square of the amplitude","Square root of the amplitude","Frequency"],
+    a:1,
+    e:"Total energy E = ½kA², which is proportional to the square of the amplitude."
+  }
+];
+
+let qi = 0, score = 0, answered = false;
+
+function showQuestion() {
+  answered = false;
+
+  document.getElementById("feedback").textContent = "";
+  document.getElementById("next").style.display = "none";
+
+  const q = questions[qi];
+  document.getElementById("question").textContent = q.q;
+
+  const box = document.getElementById("options");
+  box.innerHTML = "";
+
+  q.o.forEach((option, i) => {
+    const b = document.createElement("button");
+    b.textContent = option;
+
+    b.addEventListener("click", () => {
+      if (answered) return;
+      answered = true;
+
+      const feedback = document.getElementById("feedback");
+
+      if (i === q.a) {
+        score++;
+        feedback.style.color = "#087c63";
+        feedback.textContent = "Correct! " + q.e;
+      } else {
+        feedback.style.color = "#bd3261";
+        feedback.textContent = "Not quite. " + q.e;
+      }
+
+      const next = document.getElementById("next");
+      next.style.display = "inline-block";
+      next.textContent = qi === questions.length - 1
+        ? "See score"
+        : "Next question →";
+    });
+
+    box.appendChild(b);
+  });
+}
+
+document.getElementById("next").addEventListener("click", () => {
+  if (qi < questions.length - 1) {
+    qi++;
+    showQuestion();
+  } else {
+    document.getElementById("question").textContent =
+      "Quiz complete! Your score: " + score + "/" + questions.length;
+
+    document.getElementById("options").innerHTML = "";
+    document.getElementById("feedback").textContent =
+      score === questions.length
+        ? "Excellent work! 🎉"
+        : "Review the concepts and try again.";
+
+    const next = document.getElementById("next");
+    next.textContent = "Try again";
+
+    next.onclick = () => {
+      qi = 0;
+      score = 0;
+      next.onclick = null;
+      showQuestion();
+    };
+  }
+});
+
+window.addEventListener("resize", drawAll);
+
+updateValues();
+showQuestion();
+requestAnimationFrame(animate);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1419 @@
+/* =====================================================
+   PERIODIC MOTION - SUBTOPIC
+   ===================================================== */
+
+
+/* ================= GENERAL ================= */
+
+body {
+    background:
+        radial-gradient(
+            circle at 10% 10%,
+            #eef1ff 0%,
+            transparent 32%
+        ),
+        radial-gradient(
+            circle at 90% 15%,
+            #e7f8ff 0%,
+            transparent 30%
+        ),
+        #f8faff;
+
+    color: #172554;
+}
+
+
+/* Remove strong dark-theme glow */
+
+body::before {
+    background: rgba(90, 110, 255, 0.035);
+}
+
+body::after {
+    background: rgba(0, 180, 220, 0.025);
+}
+
+
+/* ================= NAVBAR ================= */
+
+nav {
+    background: rgba(255, 255, 255, 0.88);
+
+    border-bottom:
+        1px solid #dbe3f0;
+
+    box-shadow:
+        0 8px 30px rgba(40, 60, 120, 0.08);
+
+    backdrop-filter: blur(18px);
+}
+
+nav a {
+    color: #334155;
+}
+
+nav a:hover {
+    color: #3155d9;
+}
+
+
+/* ================= HERO ================= */
+
+.topic-hero {
+    max-width: 1100px;
+
+    margin: 0 auto;
+
+    padding:
+        100px 40px 70px;
+}
+
+.topic-number {
+    color: #5271ff;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    letter-spacing: 3px;
+
+    margin-bottom: 20px;
+}
+
+.topic-hero h1 {
+    margin: 0;
+
+    font-family:
+        "Space Grotesk",
+        sans-serif;
+
+    font-size:
+        clamp(55px, 8vw, 100px);
+
+    line-height: 0.95;
+
+    font-weight: 700;
+
+    color: #172554;
+}
+
+.topic-intro {
+    max-width: 700px;
+
+    margin-top: 28px;
+
+    font-size: 20px;
+
+    line-height: 1.7;
+
+    color: #64748b;
+}
+
+
+/* ================= COMMON ================= */
+
+.concept,
+.formula-section,
+.graphs-section,
+.periodic-function,
+.advanced-formulas,
+.example-section,
+.experiment,
+.examples,
+.key-section,
+.next-topic {
+
+    max-width: 1100px;
+
+    margin: 0 auto;
+
+    padding:
+        80px 40px;
+}
+
+.small-title {
+
+    color: #5271ff;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    letter-spacing: 3px;
+
+    margin-bottom: 14px;
+}
+
+.concept h2,
+.formula-section h2,
+.graphs-section h2,
+.periodic-function h2,
+.advanced-formulas h2,
+.example-section h2,
+.experiment h2,
+.examples h2,
+.key-section h2,
+.next-topic h2 {
+
+    margin-top: 0;
+
+    margin-bottom: 20px;
+
+    font-size: 42px;
+
+    line-height: 1.1;
+
+    color: #172554;
+}
+
+.section-text {
+
+    color: #52627a;
+
+    font-size: 17px;
+
+    line-height: 1.8;
+}
+
+
+/* ================= CONCEPT ================= */
+
+.concept {
+
+    display: grid;
+
+    grid-template-columns:
+        1.1fr 0.9fr;
+
+    gap: 70px;
+
+    align-items: center;
+}
+
+.concept-text p:not(.small-title) {
+
+    color: #52627a;
+
+    font-size: 17px;
+
+    line-height: 1.8;
+}
+
+.definition-box {
+
+    margin-top: 30px;
+
+    padding: 22px 25px;
+
+    background: #eef3ff;
+
+    border-left:
+        4px solid #5271ff;
+
+    border-radius: 12px;
+}
+
+.definition-box span {
+
+    display: block;
+
+    color: #5271ff;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 8px;
+}
+
+.definition-box p {
+
+    margin: 0;
+
+    color: #24345c !important;
+
+    font-weight: 600;
+}
+
+
+/* ================= VISUAL ================= */
+
+.concept-visual {
+
+    min-height: 320px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: white;
+
+    border:
+        1px solid #dce4f2;
+
+    border-radius: 25px;
+
+    box-shadow:
+        0 15px 40px rgba(35, 55, 100, 0.08);
+}
+
+.orbit {
+
+    position: relative;
+
+    width: 220px;
+
+    height: 220px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+}
+
+.orbit-line {
+
+    position: absolute;
+
+    width: 180px;
+
+    height: 180px;
+
+    border:
+        2px dashed #b9c5e5;
+
+    border-radius: 50%;
+}
+
+.planet {
+
+    position: absolute;
+
+    width: 22px;
+
+    height: 22px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 30% 30%,
+            #ffffff,
+            #5271ff 45%,
+            #263fc4
+        );
+
+    box-shadow:
+        0 5px 20px rgba(70, 90, 220, 0.35);
+
+    animation:
+        orbit 4s linear infinite;
+}
+
+@keyframes orbit {
+
+    from {
+        transform:
+            rotate(0deg)
+            translateX(90px);
+    }
+
+    to {
+        transform:
+            rotate(360deg)
+            translateX(90px);
+    }
+}
+
+.concept-visual p {
+
+    max-width: 270px;
+
+    text-align: center;
+
+    color: #64748b;
+
+    line-height: 1.6;
+}
+
+
+/* =====================================================
+   PERIOD & FREQUENCY
+   ===================================================== */
+
+.formula-section {
+
+    max-width: none;
+
+    padding-left:
+        max(40px, calc((100vw - 1100px) / 2));
+
+    padding-right:
+        max(40px, calc((100vw - 1100px) / 2));
+
+    background: #f1f5ff;
+
+    border-top:
+        1px solid #dce5f5;
+
+    border-bottom:
+        1px solid #dce5f5;
+}
+
+.formula-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 25px;
+
+    margin-top: 35px;
+}
+
+.formula-card {
+
+    padding: 30px;
+
+    background: white;
+
+    border:
+        1px solid #dce4f2;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 12px 35px rgba(35, 55, 100, 0.07);
+}
+
+.formula-label {
+
+    color: #5271ff;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+}
+
+.big-formula {
+
+    margin: 20px 0;
+
+    font-size: 40px;
+
+    font-weight: 700;
+
+    color: #243fc4;
+}
+
+.formula-card p {
+
+    color: #64748b;
+
+    line-height: 1.7;
+}
+
+.unit {
+
+    display: inline-block;
+
+    margin-top: 12px;
+
+    padding: 8px 12px;
+
+    border-radius: 8px;
+
+    background: #eef3ff;
+
+    color: #5271ff;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+.important-formula {
+
+    margin-top: 25px;
+
+    padding: 20px;
+
+    text-align: center;
+
+    background: #e5ebff;
+
+    border-radius: 14px;
+
+    color: #263fc4;
+}
+
+
+/* =====================================================
+   GRAPHS
+   ===================================================== */
+
+.graphs-section {
+    max-width: 1200px;
+}
+
+.graph-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 25px;
+
+    margin-top: 40px;
+}
+
+.graph-card {
+
+    padding: 25px;
+
+    background: white;
+
+    border:
+        1px solid #dce4f2;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 12px 35px rgba(35, 55, 100, 0.07);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.graph-card:hover {
+
+    transform:
+        translateY(-5px);
+
+    box-shadow:
+        0 18px 40px rgba(70, 90, 180, 0.13);
+}
+
+.graph-title {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 15px;
+}
+
+.graph-title h3 {
+
+    margin: 0;
+
+    color: #172554;
+
+    font-size: 18px;
+}
+
+.graph-title span {
+
+    padding: 6px 10px;
+
+    border-radius: 8px;
+
+    background: #eef3ff;
+
+    color: #5271ff;
+
+    font-size: 11px;
+
+    font-weight: 600;
+}
+
+.graph-card svg {
+
+    width: 100%;
+
+    height: auto;
+
+    display: block;
+
+    background: #fbfcff;
+
+    border-radius: 12px;
+}
+
+.axis {
+
+    stroke: #94a3b8;
+
+    stroke-width: 2;
+}
+
+.wave {
+
+    stroke: #5271ff;
+
+    stroke-width: 4;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+}
+
+.period-line {
+
+    stroke: #8b9be8;
+
+    stroke-width: 2;
+
+    stroke-dasharray: 6 5;
+}
+
+.graph-card text {
+
+    fill: #52627a;
+
+    font-size: 14px;
+
+    font-family:
+        "Space Grotesk",
+        sans-serif;
+}
+
+.graph-card p {
+
+    margin-bottom: 0;
+
+    color: #64748b;
+
+    line-height: 1.6;
+}
+
+
+/* =====================================================
+   PERIODIC FUNCTION
+   ===================================================== */
+
+.periodic-function {
+
+    background:
+        linear-gradient(
+            135deg,
+            #f8faff,
+            #eef4ff
+        );
+
+    max-width: none;
+
+    padding-left:
+        max(40px, calc((100vw - 1100px) / 2));
+
+    padding-right:
+        max(40px, calc((100vw - 1100px) / 2));
+}
+
+.function-box {
+
+    margin: 35px 0;
+
+    padding: 30px;
+
+    background: white;
+
+    border:
+        1px solid #dce4f2;
+
+    border-radius: 20px;
+
+    text-align: center;
+
+    box-shadow:
+        0 12px 35px rgba(35, 55, 100, 0.06);
+}
+
+.function-box p {
+
+    color: #64748b;
+
+    font-size: 17px;
+}
+
+.main-equation {
+
+    margin: 20px 0;
+
+    font-size: 38px;
+
+    font-weight: 700;
+
+    color: #3155d9;
+}
+
+.equation {
+
+    margin-top: 20px;
+
+    font-size: 30px;
+
+    font-weight: 700;
+
+    color: #3155d9;
+}
+
+
+/* =====================================================
+   ADVANCED FORMULAS
+   ===================================================== */
+
+.advanced-formulas {
+
+    max-width: 1100px;
+}
+
+.formula-stack {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 20px;
+
+    margin-top: 35px;
+}
+
+.equation-box {
+
+    padding: 28px;
+
+    background: white;
+
+    border:
+        1px solid #dce4f2;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 10px 30px rgba(35, 55, 100, 0.06);
+}
+
+.equation-box span {
+
+    color: #5271ff;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+}
+
+.equation-box.highlight {
+
+    background:
+        linear-gradient(
+            135deg,
+            #eef2ff,
+            #e7f8ff
+        );
+
+    border:
+        1px solid #cbd6ff;
+}
+
+
+/* =====================================================
+   EXAMPLE
+   ===================================================== */
+
+.example-section {
+
+    max-width: 1000px;
+}
+
+.example-box {
+
+    margin-top: 30px;
+
+    padding: 35px;
+
+    background: white;
+
+    border:
+        1px solid #dce4f2;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 12px 35px rgba(35, 55, 100, 0.07);
+}
+
+.example-box h3 {
+
+    color: #172554;
+
+    margin-top: 0;
+
+    margin-bottom: 10px;
+}
+
+.example-box p {
+
+    color: #52627a;
+
+    line-height: 1.8;
+}
+
+.calculation {
+
+    margin-top: 25px;
+
+    padding: 25px;
+
+    background: #eef3ff;
+
+    border-radius: 15px;
+
+    color: #3155d9;
+
+    font-size: 20px;
+
+    line-height: 1.8;
+
+    font-weight: 600;
+}
+
+
+/* =====================================================
+   SIMULATION
+   ===================================================== */
+
+.experiment {
+
+    max-width: none;
+
+    padding-left:
+        max(40px, calc((100vw - 1100px) / 2));
+
+    padding-right:
+        max(40px, calc((100vw - 1100px) / 2));
+
+    background:
+        linear-gradient(
+            135deg,
+            #eef3ff,
+            #f4faff
+        );
+
+    border-top:
+        1px solid #dce5f5;
+
+    border-bottom:
+        1px solid #dce5f5;
+}
+
+.simulation {
+
+    margin-top: 40px;
+
+    background: white;
+
+    border:
+        1px solid #dce4f2;
+
+    border-radius: 24px;
+
+    padding: 35px;
+
+    box-shadow:
+        0 15px 45px rgba(35, 55, 100, 0.08);
+}
+
+.simulation-title {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-bottom: 25px;
+
+    color: #52627a;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+.simulation-area {
+
+    position: relative;
+
+    height: 180px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 25px;
+
+    padding: 0 30px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #f8faff,
+            #eef3ff
+        );
+
+    border:
+        1px solid #dce4f2;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+}
+
+.start-point,
+.end-point {
+
+    width: 30px;
+
+    height: 30px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #e4eaff;
+
+    color: #3155d9;
+
+    font-weight: 700;
+
+    z-index: 2;
+}
+
+.track {
+
+    position: relative;
+
+    flex: 1;
+
+    height: 6px;
+
+    background: #cbd5e1;
+
+    border-radius: 10px;
+}
+
+.track::before,
+.track::after {
+
+    content: "";
+
+    position: absolute;
+
+    top: 50%;
+
+    width: 12px;
+
+    height: 12px;
+
+    border-radius: 50%;
+
+    background: #94a3b8;
+
+    transform:
+        translateY(-50%);
+}
+
+.track::before {
+    left: 0;
+}
+
+.track::after {
+    right: 0;
+}
+
+.moving-ball {
+
+    position: absolute;
+
+    top: 50%;
+
+    left: 0;
+
+    width: 34px;
+
+    height: 34px;
+
+    border-radius: 50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    background:
+        radial-gradient(
+            circle at 30% 25%,
+            #ffffff,
+            #5271ff 45%,
+            #263fc4
+        );
+
+    box-shadow:
+        0 6px 25px rgba(70, 90, 220, 0.4);
+
+    animation:
+        periodicMove 4s ease-in-out infinite;
+}
+
+@keyframes periodicMove {
+
+    0% {
+        left: 0%;
+    }
+
+    50% {
+        left: 100%;
+    }
+
+    100% {
+        left: 0%;
+    }
+}
+
+.cycle-label {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 25px;
+
+    margin-top: 25px;
+
+    color: #5271ff;
+
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   INFO CARDS
+   ===================================================== */
+
+.simulation-info {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 20px;
+
+    margin-top: 25px;
+}
+
+.info-card {
+
+    padding: 28px;
+
+    background: white;
+
+    border:
+        1px solid #dce4f2;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 10px 30px rgba(35, 55, 100, 0.06);
+
+    transition:
+        transform 0.25s ease;
+}
+
+.info-card:hover {
+
+    transform:
+        translateY(-5px);
+}
+
+.info-icon {
+
+    width: 42px;
+
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-bottom: 18px;
+
+    border-radius: 12px;
+
+    background: #e9edff;
+
+    color: #3155d9;
+
+    font-size: 20px;
+
+    font-weight: 700;
+}
+
+.info-card h3 {
+
+    margin: 0 0 8px;
+
+    color: #172554;
+}
+
+.info-card p {
+
+    margin: 0;
+
+    color: #64748b;
+
+    line-height: 1.6;
+}
+
+
+/* =====================================================
+   EXAMPLES
+   ===================================================== */
+
+.example-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 22px;
+
+    margin-top: 35px;
+}
+
+.example-card {
+
+    padding: 30px;
+
+    background: white;
+
+    border:
+        1px solid #dce4f2;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 12px 35px rgba(35, 55, 100, 0.07);
+
+    transition:
+        transform 0.25s ease;
+}
+
+.example-card:hover {
+
+    transform:
+        translateY(-6px);
+}
+
+.example-icon {
+
+    width: 52px;
+
+    height: 52px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-bottom: 20px;
+
+    border-radius: 15px;
+
+    background: #e9edff;
+
+    color: #3155d9;
+
+    font-size: 25px;
+}
+
+.example-card h3 {
+
+    margin-bottom: 10px;
+
+    color: #172554;
+}
+
+.example-card p {
+
+    margin: 0;
+
+    color: #64748b;
+
+    line-height: 1.7;
+}
+
+
+/* =====================================================
+   QUICK REVISION
+   ===================================================== */
+
+.key-section {
+
+    text-align: center;
+}
+
+.revision-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 18px;
+
+    margin-top: 35px;
+}
+
+.revision-grid div {
+
+    padding: 25px;
+
+    background: white;
+
+    border:
+        1px solid #dce4f2;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 8px 25px rgba(35, 55, 100, 0.05);
+}
+
+.revision-grid span {
+
+    display: block;
+
+    color: #3155d9;
+
+    font-size: 22px;
+
+    font-weight: 700;
+
+    margin-bottom: 8px;
+}
+
+.revision-grid p {
+
+    margin: 0;
+
+    color: #64748b;
+
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   NEXT TOPIC
+   ===================================================== */
+
+.next-topic {
+
+    text-align: center;
+
+    padding-top: 50px;
+
+    padding-bottom: 100px;
+}
+
+.next-topic p:not(.small-title) {
+
+    max-width: 600px;
+
+    margin:
+        0 auto 30px;
+
+    color: #64748b;
+
+    line-height: 1.7;
+}
+
+.next-button {
+
+    display: inline-block;
+
+    padding:
+        14px 26px;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #5271ff,
+            #3155d9
+        );
+
+    color: white;
+
+    text-decoration: none;
+
+    font-weight: 600;
+
+    box-shadow:
+        0 8px 20px rgba(70, 90, 220, 0.25);
+
+    transition:
+        transform 0.2s ease;
+}
+
+.next-button:hover {
+
+    transform:
+        translateY(-3px);
+}
+
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
+
+footer {
+
+    padding:
+        35px 40px;
+
+    text-align: center;
+
+    border-top:
+        1px solid #dce4f2;
+
+    color: #64748b;
+
+    background: white;
+}
+
+footer p {
+    margin: 5px;
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 800px) {
+
+    .topic-hero {
+
+        padding:
+            80px 25px 50px;
+    }
+
+    .topic-hero h1 {
+
+        font-size: 55px;
+    }
+
+    .topic-intro {
+
+        font-size: 17px;
+    }
+
+    .concept {
+
+        grid-template-columns: 1fr;
+
+        padding:
+            60px 25px;
+    }
+
+    .formula-section,
+    .graphs-section,
+    .periodic-function,
+    .advanced-formulas,
+    .example-section,
+    .experiment,
+    .examples,
+    .key-section,
+    .next-topic {
+
+        padding-left: 25px;
+
+        padding-right: 25px;
+    }
+
+    .concept h2,
+    .formula-section h2,
+    .graphs-section h2,
+    .periodic-function h2,
+    .advanced-formulas h2,
+    .example-section h2,
+    .experiment h2,
+    .examples h2,
+    .key-section h2,
+    .next-topic h2 {
+
+        font-size: 34px;
+    }
+
+    .formula-grid,
+    .graph-grid,
+    .formula-stack {
+
+        grid-template-columns: 1fr;
+    }
+
+    .simulation-info,
+    .example-grid,
+    .revision-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    .simulation {
+
+        padding: 20px;
+    }
+
+    .simulation-area {
+
+        padding: 0 15px;
+    }
+
+    .graph-title {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+}

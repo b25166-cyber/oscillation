@@ -1,0 +1,552 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Periodic Motion | Physics Lab</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--blue:#4965f5;--cyan:#00aeca;--ink:#192746;--muted:#64718b;--line:#e0e7f5}
+html{scroll-behavior:smooth}
+body{font-family:"Space Grotesk",sans-serif;background:radial-gradient(circle at 5% 5%,#e4eaff,transparent 35%),radial-gradient(circle at 95% 15%,#d9f8ff,transparent 32%),#f5f7ff;color:var(--ink);min-height:100vh}
+nav{margin:18px auto;width:min(1150px,94%);padding:18px 26px;display:flex;justify-content:space-between;align-items:center;border:1px solid #fff;border-radius:18px;background:rgba(255,255,255,.88);box-shadow:0 8px 30px #4255a014;position:sticky;top:10px;z-index:10;backdrop-filter:blur(15px)}
+.logo{font-size:17px;font-weight:700;letter-spacing:2px;color:var(--blue)}
+nav a{color:var(--muted);text-decoration:none;margin-left:18px;font-size:14px}
+nav a:hover{color:var(--blue)}
+main{width:min(1150px,92%);margin:48px auto}
+.eyebrow{color:var(--blue);font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase}
+h1{font-size:clamp(42px,7vw,76px);line-height:1.08;margin:14px 0;letter-spacing:-3px;background:linear-gradient(110deg,#26356b,#5368ff,#00aeca);color:transparent;background-clip:text;-webkit-background-clip:text}
+.intro{color:var(--muted);max-width:720px;line-height:1.8;margin-bottom:35px}
+.section-heading{margin:46px 0 18px;scroll-margin-top:100px}
+.section-heading h2{font-size:clamp(22px,3vw,29px);margin-bottom:7px}
+.section-heading p{color:var(--muted);line-height:1.7}
+.panel{background:rgba(255,255,255,.92);border:1px solid #fff;border-radius:24px;padding:25px;box-shadow:0 12px 40px #344c8010;min-width:0}
+.lab-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:20px;align-items:stretch}
+.panel-title{font-size:18px;font-weight:700;margin-bottom:6px}
+.panel-subtitle{color:var(--muted);font-size:13px;line-height:1.6;margin-bottom:18px}
+#pendulum{width:100%;height:320px;display:block;border-radius:18px;background:linear-gradient(180deg,#f0f5ff,#e7f9ff)}
+.controls{display:grid;gap:22px}
+.control-head{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:14px;font-weight:600;margin-bottom:12px}
+.value{color:var(--blue);font-weight:700}
+input[type=range]{width:100%;accent-color:var(--blue);cursor:pointer}
+.range-labels{display:flex;justify-content:space-between;gap:10px;color:#8993a8;font-size:11px;margin-top:6px}
+.button-row{display:flex;gap:10px;flex-wrap:wrap}
+button{border:0;padding:12px 19px;border-radius:12px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:transform .2s}
+button:hover{transform:translateY(-2px)}
+.primary{background:linear-gradient(110deg,var(--blue),#7582ff);color:#fff;box-shadow:0 6px 16px #4965f530}
+.secondary{color:var(--blue);background:#edf0ff}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+.stat{background:#f3f6ff;border:1px solid #e4eaff;border-radius:16px;padding:16px 12px}
+.stat-label{font-size:11px;color:var(--muted);margin-bottom:8px}
+.stat-number{font-size:clamp(18px,2.5vw,27px);font-weight:700;color:var(--blue);overflow-wrap:anywhere}
+.stat-unit{font-size:12px;color:var(--muted)}
+.formula{margin-top:17px;padding:17px;border-radius:15px;background:#eefbff;border:1px solid #cceff8;line-height:2;color:#24536d;font-size:14px;overflow-wrap:anywhere}
+.formula strong{color:#087f9b}
+.calc{margin-top:12px;background:#f7f8ff;border:1px solid var(--line);border-radius:15px;padding:17px;font-size:13px;line-height:2;color:var(--muted);overflow-wrap:anywhere}
+.calc h3{color:var(--ink);margin-bottom:5px;font-size:14px}
+.calc strong{color:#2456c5}
+.graph-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.graph{width:100%;height:230px;display:block;background:#fbfcff;border:1px solid #e9eef8;border-radius:15px}
+.graph-note{font-size:12px;color:var(--muted);line-height:1.7;margin-top:8px}
+.live-tag{display:inline-block;font-size:11px;font-weight:700;color:#087f67;background:#e2fff5;border-radius:20px;padding:6px 10px;margin-bottom:12px}
+.concept-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.concept-card{padding:22px;border-radius:18px;background:#fff;border:1px solid var(--line);box-shadow:0 8px 25px #344c8008}
+.concept-card .emoji{font-size:26px;margin-bottom:13px}
+.concept-card h3{font-size:16px;margin-bottom:8px}
+.concept-card p{color:var(--muted);font-size:13px;line-height:1.8}
+.callout{padding:22px;background:linear-gradient(120deg,#edf0ff,#e8fbff);border-radius:18px;line-height:1.9;color:#35476d;margin-top:20px}
+.formula-large{font-size:clamp(19px,2.6vw,25px);font-weight:700;color:#2250bf;margin:12px 0}
+.example{padding:22px;background:#fff;border:1px solid var(--line);border-radius:18px;margin-top:15px;line-height:1.9;color:var(--muted)}
+.example summary{cursor:pointer;color:var(--ink)}
+.answer{background:#f0fbff;border-left:4px solid var(--cyan);padding:12px 15px;border-radius:8px;margin-top:10px;color:#24536d}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:40px 15px}
+@media(max-width:800px){main{margin-top:35px}.lab-grid,.graph-grid{grid-template-columns:1fr}.concept-grid{grid-template-columns:1fr 1fr}#pendulum{height:280px}.panel{padding:18px}h1{letter-spacing:-1.5px}}
+@media(max-width:520px){nav{padding:14px;flex-wrap:wrap;gap:12px}.logo{font-size:13px;letter-spacing:1px}nav a{margin-left:7px;font-size:12px}.stats{gap:7px}.stat{padding:12px 8px}.concept-grid{grid-template-columns:1fr}.range-labels{font-size:10px}}
+</style>
+</head>
+
+<body>
+<nav>
+  <div class="logo">⚛ PHYSICS LAB</div>
+  <div>
+    <a href="index.html">Home</a>
+    <a href="#experiment">Experiment</a>
+    <a href="#graphs">Graphs</a>
+    <a href="#learn">Learn</a>
+  </div>
+</nav>
+
+<main>
+  <div class="eyebrow">Class 11 Physics · Oscillations</div>
+  <h1>Periodic Motion</h1>
+  <p class="intro">Don't just read about motion. Experiment with it! Change the pendulum's length and angle, watch it swing, and see how its calculations and graphs change in real time.</p>
+
+  <div class="section-heading" id="experiment">
+    <h2>🎮 Your Virtual Pendulum</h2>
+    <p>Change the controls and observe what happens to the motion.</p>
+  </div>
+
+  <div class="lab-grid">
+    <section class="panel">
+      <div class="panel-title">Live experiment</div>
+      <p class="panel-subtitle">The bob moves under gravity. The dotted line shows its equilibrium position.</p>
+      <canvas id="pendulum" aria-label="Animated virtual pendulum"></canvas>
+
+      <div class="stats">
+        <div class="stat"><div class="stat-label">Time period (T)</div><div class="stat-number" id="period">2.01</div><div class="stat-unit">seconds</div></div>
+        <div class="stat"><div class="stat-label">Frequency (f)</div><div class="stat-number" id="frequency">0.50</div><div class="stat-unit">hertz (Hz)</div></div>
+        <div class="stat"><div class="stat-label">Angular frequency (ω)</div><div class="stat-number" id="omega">3.13</div><div class="stat-unit">rad/s</div></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-title">Experiment controls</div>
+      <p class="panel-subtitle">Move the sliders. Your calculations update automatically.</p>
+
+      <div class="controls">
+        <div>
+          <div class="control-head"><label for="length">Pendulum length</label><span class="value" id="lengthValue">1.00 m</span></div>
+          <input id="length" type="range" min="0.30" max="2.00" step="0.05" value="1">
+          <div class="range-labels"><span>0.30 m · Short</span><span>2.00 m · Long</span></div>
+        </div>
+
+        <div>
+          <div class="control-head"><label for="angle">Initial angle</label><span class="value" id="angleValue">20°</span></div>
+          <input id="angle" type="range" min="5" max="45" step="1" value="20">
+          <div class="range-labels"><span>5° · Small swing</span><span>45° · Large swing</span></div>
+        </div>
+
+        <div>
+          <div class="control-head"><label for="speed">Simulation speed</label><span class="value" id="speedValue">1×</span></div>
+          <input id="speed" type="range" min="0.5" max="2" step="0.25" value="1">
+          <div class="range-labels"><span>0.5× · Slow</span><span>2× · Fast</span></div>
+        </div>
+
+        <div class="button-row">
+          <button class="primary" id="pauseBtn">⏸ Pause</button>
+          <button class="secondary" id="resetBtn">↻ Reset</button>
+        </div>
+      </div>
+
+      <div class="formula">
+        <strong>Small-angle pendulum formula</strong><br>
+        T = 2π√(L/g)<br>
+        f = 1/T &nbsp; · &nbsp; ω = 2π/T<br>
+        <small>Using g = 9.8 m/s². This formula is an approximation for small oscillations.</small>
+      </div>
+
+      <div class="calc">
+        <h3>🧮 Calculation from your settings</h3>
+        <div id="calculation"></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="section-heading" id="graphs">
+    <h2>📈 Watch the graphs move</h2>
+    <p>The graphs use the simulation clock. The first shows angular displacement from equilibrium; the second shows angular velocity.</p>
+  </div>
+
+  <div class="graph-grid">
+    <section class="panel">
+      <span class="live-tag">● LIVE GRAPH</span>
+      <div class="panel-title">Angular displacement vs time</div>
+      <canvas class="graph" id="displacementGraph" aria-label="Live displacement-time graph"></canvas>
+      <p class="graph-note">The vertical axis represents angular displacement and the horizontal axis represents time. One complete repeating pattern corresponds to one time period, T.</p>
+    </section>
+
+    <section class="panel">
+      <span class="live-tag">● LIVE GRAPH</span>
+      <div class="panel-title">Angular velocity vs time</div>
+      <canvas class="graph" id="velocityGraph" aria-label="Live angular velocity-time graph"></canvas>
+      <p class="graph-note">Angular velocity is zero at the turning points and greatest in magnitude near equilibrium. In ideal SHM, it is a quarter-cycle out of phase with displacement.</p>
+    </section>
+  </div>
+
+  <div class="section-heading" id="learn">
+    <h2>🧠 Understand the NCERT concepts</h2>
+    <p>Learn the ideas, then connect each one to the pendulum and graphs above.</p>
+  </div>
+
+  <div class="concept-grid">
+    <article class="concept-card">
+      <div class="emoji">🔁</div>
+      <h3>Periodic motion</h3>
+      <p>A motion that repeats itself at regular intervals of time is called periodic motion. Examples include the hands of a clock, Earth's rotation, and an ideal pendulum's repeated swings.</p>
+    </article>
+
+    <article class="concept-card">
+      <div class="emoji">↔️</div>
+      <h3>One complete oscillation</h3>
+      <p>One complete oscillation means the object returns to its starting position moving in the same direction. For a pendulum starting at the left extreme: left → centre → right extreme → centre → left.</p>
+    </article>
+
+    <article class="concept-card">
+      <div class="emoji">⏱️</div>
+      <h3>Time period (T)</h3>
+      <p>The time taken to complete one full cycle is the time period. Its SI unit is the second (s). In the small-angle model, a longer pendulum has a longer time period.</p>
+    </article>
+
+    <article class="concept-card">
+      <div class="emoji">⚡</div>
+      <h3>Frequency (f)</h3>
+      <p>Frequency is the number of complete cycles per unit time. Its SI unit is hertz (Hz). One hertz means one cycle per second.</p>
+    </article>
+
+    <article class="concept-card">
+      <div class="emoji">〰️</div>
+      <h3>Periodic motion is not always SHM</h3>
+      <p>All ideal SHM is periodic, but not every periodic motion is SHM. In SHM, acceleration is proportional to displacement and directed toward equilibrium.</p>
+    </article>
+
+    <article class="concept-card">
+      <div class="emoji">📉</div>
+      <h3>Read the graph</h3>
+      <p>On a displacement-time graph, the time between matching points in consecutive cycles is T. The maximum displacement from equilibrium is the amplitude.</p>
+    </article>
+  </div>
+
+  <div class="callout">
+    <strong>Key relationships</strong>
+    <div class="formula-large">f = 1/T &nbsp;&nbsp; and &nbsp;&nbsp; T = 1/f</div>
+    For ideal sinusoidal SHM, angular frequency and period are related by
+    <strong>ω = 2π/T = 2πf</strong>, so <strong>T = 2π/ω</strong>.
+    General periodic motion does not have to follow a sine or cosine curve.
+  </div>
+
+  <div class="section-heading">
+    <h2>🧪 NCERT-style worked examples</h2>
+    <p>Try to solve each one yourself before opening the solution.</p>
+  </div>
+
+  <details class="example">
+    <summary>Example 1 — Find frequency and time period</summary>
+    <p>A human heart beats 75 times in 60 seconds. Find its average frequency and time period.</p>
+    <div class="answer">
+      <strong>Step 1: Frequency</strong><br>
+      f = number of beats / time = 75 / 60 = 1.25 Hz<br>
+      <strong>Step 2: Time period</strong><br>
+      T = 1/f = 1/1.25 = 0.8 s<br>
+      <strong>Answer:</strong> f = 1.25 Hz and T = 0.8 s.
+    </div>
+  </details>
+
+  <details class="example">
+    <summary>Example 2 — Count the cycles</summary>
+    <p>An object completes 20 oscillations in 10 seconds. Find f and T.</p>
+    <div class="answer">
+      f = 20/10 = 2 Hz<br>
+      T = 1/f = 1/2 = 0.5 s<br>
+      <strong>Answer:</strong> frequency = 2 Hz and time period = 0.5 s.
+    </div>
+  </details>
+
+  <details class="example">
+    <summary>Example 3 — Pendulum length and time period</summary>
+    <p>Estimate the time period of a 1.00 m pendulum using g = 9.8 m/s².</p>
+    <div class="answer">
+      T = 2π√(L/g)<br>
+      T = 2π√(1.00/9.8)<br>
+      T ≈ 2.01 s<br>
+      <strong>Note:</strong> this is the small-angle approximation.
+    </div>
+  </details>
+
+  <div class="section-heading">
+    <h2>✅ Quick check</h2>
+    <p>Choose an answer to check your understanding.</p>
+  </div>
+
+  <section class="panel">
+    <p><strong>If an object completes 5 oscillations in 10 seconds, what is its frequency?</strong></p>
+    <div class="button-row" style="margin-top:15px">
+      <button class="secondary quiz" data-answer="wrong">0.2 Hz</button>
+      <button class="secondary quiz" data-answer="correct">0.5 Hz</button>
+      <button class="secondary quiz" data-answer="wrong">2 Hz</button>
+    </div>
+    <p id="quizFeedback" aria-live="polite" style="margin-top:14px;color:var(--muted);font-size:14px"></p>
+  </section>
+</main>
+
+<footer>PHYSICS LAB · Explore, observe, calculate, understand.</footer>
+
+<script>
+const canvas = document.getElementById("pendulum");
+const ctx = canvas.getContext("2d");
+const displacementCanvas = document.getElementById("displacementGraph");
+const velocityCanvas = document.getElementById("velocityGraph");
+const dctx = displacementCanvas.getContext("2d");
+const vctx = velocityCanvas.getContext("2d");
+
+const lengthInput = document.getElementById("length");
+const angleInput = document.getElementById("angle");
+const speedInput = document.getElementById("speed");
+const g = 9.8;
+
+let time = 0;
+let lastStamp = 0;
+let running = true;
+let history = [];
+
+function values() {
+  const L = Number(lengthInput.value);
+  const Adeg = Number(angleInput.value);
+  const A = Adeg * Math.PI / 180;
+  const T = 2 * Math.PI * Math.sqrt(L / g);
+  const f = 1 / T;
+  const omega = 2 * Math.PI / T;
+  return {L, Adeg, A, T, f, omega};
+}
+
+function updateReadouts() {
+  const q = values();
+
+  document.getElementById("lengthValue").textContent = q.L.toFixed(2) + " m";
+  document.getElementById("angleValue").textContent = q.Adeg + "°";
+  document.getElementById("speedValue").textContent = Number(speedInput.value) + "×";
+  document.getElementById("period").textContent = q.T.toFixed(2);
+  document.getElementById("frequency").textContent = q.f.toFixed(2);
+  document.getElementById("omega").textContent = q.omega.toFixed(2);
+
+  document.getElementById("calculation").innerHTML =
+    `T = 2π√(L/g)<br>
+     T = 2π√(${q.L.toFixed(2)} / 9.8)<br>
+     <strong>T ≈ ${q.T.toFixed(3)} s</strong><br><br>
+     f = 1/T = 1/${q.T.toFixed(3)}<br>
+     <strong>f ≈ ${q.f.toFixed(3)} Hz</strong><br><br>
+     ω = 2π/T = 2π/${q.T.toFixed(3)}<br>
+     <strong>ω ≈ ${q.omega.toFixed(3)} rad/s</strong>`;
+}
+
+function resizeCanvas(c, context) {
+  const rect = c.getBoundingClientRect();
+  const dpr = Math.max(1, window.devicePixelRatio || 1);
+  c.width = Math.round(rect.width * dpr);
+  c.height = Math.round(rect.height * dpr);
+  context.setTransform(dpr, 0, 0, dpr, 0, 0);
+  return {w: rect.width, h: rect.height};
+}
+
+function drawPendulum() {
+  const {w, h} = resizeCanvas(canvas, ctx);
+  const q = values();
+  ctx.clearRect(0, 0, w, h);
+
+  const pivotX = w / 2;
+  const pivotY = 35;
+  const lenPx = Math.min(h * 0.66, 100 + q.L * 95);
+  const theta = q.A * Math.cos(q.omega * time);
+  const bobX = pivotX + lenPx * Math.sin(theta);
+  const bobY = pivotY + lenPx * Math.cos(theta);
+
+  ctx.strokeStyle = "#aab8d5";
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(pivotX - 48, pivotY);
+  ctx.lineTo(pivotX + 48, pivotY);
+  ctx.stroke();
+
+  ctx.fillStyle = "#64718b";
+  ctx.beginPath();
+  ctx.arc(pivotX, pivotY, 5, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.setLineDash([5, 5]);
+  ctx.strokeStyle = "#9ba9c6";
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(pivotX, pivotY + 4);
+  ctx.lineTo(pivotX, pivotY + lenPx + 15);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  ctx.strokeStyle = "#4965f5";
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(pivotX, pivotY);
+  ctx.lineTo(bobX, bobY);
+  ctx.stroke();
+
+  const grad = ctx.createRadialGradient(bobX - 5, bobY - 6, 2, bobX, bobY, 19);
+  grad.addColorStop(0, "#8cf1ff");
+  grad.addColorStop(1, "#4965f5");
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.arc(bobX, bobY, 17, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = "#fff";
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  ctx.fillStyle = "#52617e";
+  ctx.font = "12px Space Grotesk";
+  ctx.textAlign = "center";
+  ctx.fillText("equilibrium", pivotX + 48, Math.min(h - 12, pivotY + lenPx + 18));
+
+  ctx.textAlign = "left";
+  ctx.fillText("θ", pivotX + 12, pivotY + 35);
+  ctx.fillStyle = "#4965f5";
+  ctx.font = "bold 12px Space Grotesk";
+  ctx.fillText("L = " + q.L.toFixed(2) + " m", pivotX + 12, pivotY + lenPx * 0.52);
+}
+
+function drawGraph(c, context, kind) {
+  const {w, h} = resizeCanvas(c, context);
+  context.clearRect(0, 0, w, h);
+
+  const pad = {l: 42, r: 12, t: 18, b: 31};
+  const gw = w - pad.l - pad.r;
+  const gh = h - pad.t - pad.b;
+  const q = values();
+  const amp = kind === "x" ? q.A : Math.max(q.A * q.omega, 0.1);
+  const mid = pad.t + gh / 2;
+
+  context.font = "11px Space Grotesk";
+  context.strokeStyle = "#e1e7f3";
+  context.lineWidth = 1;
+
+  for (let i = 0; i <= 4; i++) {
+    const y = pad.t + gh * i / 4;
+    context.beginPath();
+    context.moveTo(pad.l, y);
+    context.lineTo(w - pad.r, y);
+    context.stroke();
+
+    const x = pad.l + gw * i / 4;
+    context.beginPath();
+    context.moveTo(x, pad.t);
+    context.lineTo(x, h - pad.b);
+    context.stroke();
+  }
+
+  context.strokeStyle = "#8998b5";
+  context.lineWidth = 1.4;
+  context.beginPath();
+  context.moveTo(pad.l, mid);
+  context.lineTo(w - pad.r, mid);
+  context.stroke();
+
+  context.fillStyle = "#64718b";
+  context.textAlign = "center";
+  context.fillText("Time (s)", pad.l + gw / 2, h - 7);
+
+  context.textAlign = "left";
+  context.fillText(kind === "x" ? "θ (rad)" : "ω (rad/s)", 5, 12);
+
+  context.textAlign = "center";
+  for (let i = 0; i <= 4; i++) {
+    context.fillText((q.T * i / 2).toFixed(1), pad.l + gw * i / 4, h - pad.b + 17);
+  }
+
+  // Plot a moving two-period window from the simulation's time history.
+  const windowT = 2 * q.T;
+  const start = Math.max(0, time - windowT);
+  const tEnd = start + windowT;
+  const points = [];
+
+  for (let i = 0; i < 150; i++) {
+    const t = start + (tEnd - start) * i / 149;
+    if (t <= time) {
+      points.push({
+        t,
+        x: q.A * Math.cos(q.omega * t),
+        v: -q.A * q.omega * Math.sin(q.omega * t)
+      });
+    }
+  }
+
+  context.strokeStyle = kind === "x" ? "#4965f5" : "#00aeca";
+  context.lineWidth = 2.5;
+  context.lineJoin = "round";
+  context.beginPath();
+
+  points.forEach((p, i) => {
+    const x = pad.l + ((p.t - start) / windowT) * gw;
+    const val = kind === "x" ? p.x : p.v;
+    const y = mid - (val / amp) * (gh * 0.42);
+    if (i === 0) context.moveTo(x, y);
+    else context.lineTo(x, y);
+  });
+
+  context.stroke();
+
+  // Moving dot indicates the pendulum's current position on the graph.
+  const dotX = pad.l + ((time - start) / windowT) * gw;
+  const currentVal = kind === "x"
+    ? q.A * Math.cos(q.omega * time)
+    : -q.A * q.omega * Math.sin(q.omega * time);
+  const dotY = mid - (currentVal / amp) * (gh * 0.42);
+
+  context.fillStyle = kind === "x" ? "#4965f5" : "#00aeca";
+  context.beginPath();
+  context.arc(dotX, dotY, 4, 0, Math.PI * 2);
+  context.fill();
+
+  context.fillStyle = "#64718b";
+  context.font = "10px Space Grotesk";
+  context.textAlign = "left";
+  context.fillText("T ≈ " + q.T.toFixed(2) + " s", pad.l + 5, pad.t + 12);
+}
+
+function frame(stamp) {
+  if (!lastStamp) lastStamp = stamp;
+  const dt = Math.min((stamp - lastStamp) / 1000, 0.05);
+  lastStamp = stamp;
+
+  if (running) time += dt * Number(speedInput.value);
+
+  drawPendulum();
+  drawGraph(displacementCanvas, dctx, "x");
+  drawGraph(velocityCanvas, vctx, "v");
+
+  requestAnimationFrame(frame);
+}
+
+function reset() {
+  time = 0;
+  lastStamp = 0;
+  updateReadouts();
+}
+
+[lengthInput, angleInput, speedInput].forEach(input => {
+  input.addEventListener("input", updateReadouts);
+});
+
+document.getElementById("pauseBtn").addEventListener("click", () => {
+  running = !running;
+  document.getElementById("pauseBtn").textContent = running ? "⏸ Pause" : "▶ Resume";
+});
+
+document.getElementById("resetBtn").addEventListener("click", reset);
+
+document.querySelectorAll(".quiz").forEach(button => {
+  button.addEventListener("click", () => {
+    const feedback = document.getElementById("quizFeedback");
+
+    if (button.dataset.answer === "correct") {
+      feedback.textContent = "Correct! Frequency = number of oscillations / time = 5 / 10 = 0.5 Hz.";
+      feedback.style.color = "#087f67";
+    } else {
+      feedback.textContent = "Not quite. Divide the number of oscillations by the time: f = 5 / 10. Try again!";
+      feedback.style.color = "#bd4a4a";
+    }
+  });
+});
+
+updateReadouts();
+requestAnimationFrame(frame);
+
+window.addEventListener("resize", () => {
+  drawPendulum();
+  drawGraph(displacementCanvas, dctx, "x");
+  drawGraph(velocityCanvas, vctx, "v");
+});
+</script>
+</body>
+</html>
